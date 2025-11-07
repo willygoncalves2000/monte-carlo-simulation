@@ -109,7 +109,7 @@ def rodar_simulacoes(param, contrato, N=10000, plot=False, nome_cenario="Cenári
     - Custo médio total (incluindo multas)
     """
     multas = []
-    custos_totais = []  # CORREÇÃO: agora inclui custo + multa
+    custos_totais = []
     tempos_totais = []
     prejuizos = 0
 
@@ -122,7 +122,6 @@ def rodar_simulacoes(param, contrato, N=10000, plot=False, nome_cenario="Cenári
         custo_total_com_multa = custo + multa
         
         tempos_totais.append(tempo)
-        # CORREÇÃO: armazena custo total (base + multa)
         custos_totais.append(custo_total_com_multa)
         
         if custo_total_com_multa > contrato['valor_contrato']:
@@ -132,7 +131,7 @@ def rodar_simulacoes(param, contrato, N=10000, plot=False, nome_cenario="Cenári
 
     prob_prejuizo = prejuizos / N * 100
     multa_media = statistics.mean(multas) if multas else 0
-    custo_medio = statistics.mean(custos_totais)  # CORREÇÃO: custo total real
+    custo_medio = statistics.mean(custos_totais)
 
     resultados = {
         "Probabilidade de Prejuízo (%)": prob_prejuizo,
@@ -179,7 +178,7 @@ def rodar_simulacoes(param, contrato, N=10000, plot=False, nome_cenario="Cenári
 
 
 # ==========================================================
-# 3. Exemplo de execução para o Cenário 1 (Edifício)
+# 3. Execução para o Cenário 1 (Edifício)
 # ==========================================================
 def executar_cenario_1():
     """Configura os parâmetros do Cenário 1 e executa a simulação."""
@@ -222,10 +221,9 @@ def executar_cenario_1():
     for k, v in resultados.items():
         print(f"{k}: {v:,.2f}")
 
-    # --- INÍCIO DA CORREÇÃO---
     print("\n--- Tomada de Decisão (Cenário 1) ---")
-    criterio_prejuizo = 30  # Critério do PDF: < 30% [cite: 502]
-    criterio_multa = 200000  # Critério do PDF: < R$ 200.000,00 [cite: 502]
+    criterio_prejuizo = 30  
+    criterio_multa = 200000
     
     prob_prejuizo_calc = resultados["Probabilidade de Prejuízo (%)"]
     multa_media_calc = resultados["Valor Médio da Multa (R$)"]
@@ -237,7 +235,9 @@ def executar_cenario_1():
         print("\nRECOMENDAÇÃO: Aceitar Contrato")
     else:
         print("\nRECOMENDAÇÃO: Rejeitar Contrato")
-    # --- FIM DA CORREÇÃO ---
+
+# ==========================================================
+# 4. Execução para o Cenário 2 (Galpão)
 # ==========================================================
 def executar_cenario_2():
     """Configura os parâmetros do Cenário 2 e executa a simulação."""
@@ -280,9 +280,8 @@ def executar_cenario_2():
     for k, v in resultados.items():
         print(f"{k}: {v:,.2f}")
 
-    # --- INÍCIO DA CORREÇÃO ---
     print("\n--- Tomada de Decisão (Cenário 2) ---")
-    criterio_prejuizo = 25  # Critério do PDF: < 25% [cite: 513]
+    criterio_prejuizo = 25
     
     prob_prejuizo_calc = resultados["Probabilidade de Prejuízo (%)"]
 
@@ -292,14 +291,13 @@ def executar_cenario_2():
         print("\nRECOMENDAÇÃO: Aceitar Contrato")
     else:
         print("\nRECOMENDAÇÃO: Rejeitar Contrato")
-    # --- FIM DA CORREÇÃO ---
+
 # ==========================================================
-# 5. Exemplo de execução para o Cenário 3 (Centro de Saúde)
+# 5. Execução para o Cenário 3 (Centro de Saúde)
 # ==========================================================
 def executar_cenario_3():
     """Configura os parâmetros do Cenário 3 e executa a simulação."""
     
-    # [cite_start]Parâmetros da Tabela 4 [cite: 289]
     param = {
         "prep": {"o":8, "m":12, "p":18, "muM":90000, "sigmaM":20000, "muL":120000, "sigmaL":25000},
         "fundacaoA": {
@@ -310,7 +308,6 @@ def executar_cenario_3():
             "duracao": (25, 32, 44),
             "custos": (1900000, 260000, 1350000, 170000)
         },
-        # [cite_start]pGA (0.2) e pGB (0.25) são diferentes aqui [cite: 289]
         "fundacao": {"pA":0.5, "pG":0.25, "Tgeo":30, "Cgeo":800000},
         "laje": {"o":30, "m":40, "p":55, "muM":1200000, "sigmaM":170000, "muL":900000, "sigmaL":120000},
         "alvenaria": {"o":50, "m":65, "p":85, "muM":600000, "sigmaM":90000, "muL":1300000, "sigmaL":160000,
@@ -329,7 +326,6 @@ def executar_cenario_3():
         }
     }
 
-    # [cite_start]Dados do contrato (Cenário 3) [cite: 285, 287]
     contrato = {
         "valor_contrato": 12500000,
         "prazo": 300,
@@ -341,10 +337,9 @@ def executar_cenario_3():
     for k, v in resultados.items():
         print(f"{k}: {v:,.2f}")
     
-    # --- INÍCIO DA CORREÇÃO ---
     print("\n--- Tomada de Decisão (Cenário 3) ---")
-    criterio_prejuizo = 15  # Critério do PDF: < 15% [cite: 524]
-    criterio_multa = 50000   # Critério do PDF: < R$ 50.000,00 [cite: 524]
+    criterio_prejuizo = 15 
+    criterio_multa = 50000
     
     prob_prejuizo_calc = resultados["Probabilidade de Prejuízo (%)"]
     multa_media_calc = resultados["Valor Médio da Multa (R$)"]
@@ -356,9 +351,9 @@ def executar_cenario_3():
         print("\nRECOMENDAÇÃO: Aceitar Contrato")
     else:
         print("\nRECOMENDAÇÃO: Rejeitar Contrato")
-    # --- FIM DA CORREÇÃO ---
+
 # ==========================================================
-# Execução direta
+# Execução direta (todos os cenários)
 # ==========================================================
 if __name__ == "__main__":
     executar_cenario_1()
